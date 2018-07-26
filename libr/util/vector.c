@@ -66,6 +66,16 @@ R_API void **r_vector_contains(RVector *vec, void *x) {
 	return NULL;
 }
 
+R_API int r_vector_index(RVector *vec, void *x) {
+	int i;
+	for (i = 0; i < vec->len; i++) {
+		if (vec->a[i] == x) {
+			return i;
+		}
+	}
+	return -1;
+}
+
 R_API void *r_vector_delete_at(RVector *vec, int n) {
 	void *ret = vec->a[n];
 	vec->len--;

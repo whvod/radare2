@@ -52,6 +52,7 @@ typedef void (*RVectorFree)(void *e);
 R_API void r_vector_clear(RVector *vec, void (*elem_free)(void *));
 R_API RVector *r_vector_clone(RVector *vec);
 R_API void **r_vector_contains(RVector *vec, void *x);
+R_API int r_vector_index(RVector *vec, void *x);
 R_API void *r_vector_delete_at(RVector *vec, int n);
 R_API bool r_vector_empty(RVector *vec);
 R_API void r_vector_fini(RVector *vec);
@@ -69,7 +70,7 @@ R_API void **r_vector_reserve(RVector *vec, int capacity);
 R_API void **r_vector_shrink(RVector *vec);
 R_API void r_vector_sort(RVector *vec, RVectorComparator cmp);
 
-#define r_vector_find(vec, it, cmp_eq) \
+#define r_vector_find(vec, it, cmp_eq, x) \
 	for (it = (vec)->a; it != (vec)->a + (vec)->len && !(cmp_eq (*it, x)); it++);
 
 #define r_vector_foreach(vec, it) \
