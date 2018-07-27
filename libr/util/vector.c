@@ -25,7 +25,7 @@
 		vec->capacity = new_capacity; \
 	} while (0)
 
-R_API void r_vector_clear(RVector *vec, void (*elem_free)(void *)) {
+R_API void r_vector_clear(RVector *vec, RVectorFree elem_free) {
 	if (elem_free) {
 		while (vec->len > 0) {
 			elem_free (vec->a[--vec->len]);
@@ -83,6 +83,23 @@ R_API void *r_vector_delete_at(RVector *vec, int n) {
 		vec->a[n] = vec->a[n+1];
 	}
 	return ret;
+}
+
+R_API void r_vector_delete_where(RVector *vec, RVectorComparator cmp, void *user, RVectorFree elem_free) {
+	int i;
+	int shift = 0;
+	for (i = 0; i < vec->len; i++) {
+		void *e = vec->a[i];
+		if (cmp (e, user)) {
+			shift++;
+			if (elem_free) {
+				elem_free (e);
+			}
+		} else if (shift > 0) {
+			vec->a[i - shift] = e;
+		}
+	}
+	vec->len -= shift;
 }
 
 R_API bool r_vector_empty(RVector *vec) {

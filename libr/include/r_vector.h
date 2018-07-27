@@ -49,11 +49,12 @@ typedef struct r_vector_t {
 typedef int (*RVectorComparator)(const void *a, const void *b);
 typedef void (*RVectorFree)(void *e);
 
-R_API void r_vector_clear(RVector *vec, void (*elem_free)(void *));
+R_API void r_vector_clear(RVector *vec, RVectorFree elem_free);
 R_API RVector *r_vector_clone(RVector *vec);
 R_API void **r_vector_contains(RVector *vec, void *x);
 R_API int r_vector_index(RVector *vec, void *x);
 R_API void *r_vector_delete_at(RVector *vec, int n);
+R_API void r_vector_delete_where(RVector *vec, RVectorComparator cmp, void *user, RVectorFree elem_free);
 R_API bool r_vector_empty(RVector *vec);
 R_API void r_vector_fini(RVector *vec);
 R_API void r_vector_free(RVector *vec, RVectorFree elem_free);
